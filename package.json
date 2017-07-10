@@ -12,8 +12,7 @@
     "url": "git+https://github.com/roxroy/camper-voting.git"
   },
   "keywords": [
-    "MERN",
-    "node"
+    "mongoose", "express", "node", "javascript", "passport"
   ],
   "bugs": {
     "url": "https://github.com/roxroy/camper-voting/issues"
@@ -25,6 +24,6 @@
     "express": "^4.15.3"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0",
+    "nodemon": "^1.11.0"
   }
 }
