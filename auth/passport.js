@@ -5,12 +5,10 @@ const configAuth = require('./config');
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
-    console.log('serializeUser',user);
     done(null, user.id);
   });
 
   passport.deserializeUser((id, done) => {
-    console.log('deserializeUser',id);
     User.findById(id, (err, user) => {
       done(err, user);
     });
@@ -35,9 +33,9 @@ module.exports = () => {
         const newUser = new User();
 
         newUser.github.id = profile.id;
-        newUser.github.username = profile.username;
+        newUser.github.userName = profile.username;
         newUser.github.displayName = profile.displayName;
-        newUser.github.publicRepos = profile._json.public_repos;
+        newUser.github.profileUrl = profile.profileUrl;
 
         newUser.save((err) => {
           if (err) {

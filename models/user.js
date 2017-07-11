@@ -11,7 +11,7 @@ const User = new Schema({
     id: String,
     displayName: String,
     userName: String,
-    publicRepos: Number,
+    profileUrl: String,
   },
 });
 

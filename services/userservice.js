@@ -12,8 +12,7 @@ const mapItem = (item) => {
 }
 
 const getOne = (profileId) => {
-console.log('getOne',profileId);
-  User.find({ 'github.id': profileId })
+  return User.findOne({ 'github.id': profileId })
     .exec((err, user) => {
       if (err) {
         throw err;
@@ -23,7 +22,6 @@ console.log('getOne',profileId);
         return mapItem(user);
       }
     });
-
 };
 
 module.exports = {
