@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
+const mongoose = require('mongoose');
 
 const authRoutes = require('./routes/auth'),
 			pageRoutes = require('./routes/pages'),
@@ -11,6 +12,12 @@ const authRoutes = require('./routes/auth'),
 const app = express();
 require('dotenv').load();
 require('./auth/passport')();
+
+const dbUri = process.env.MONGOLAB_URI || 'mongodb://localhost/codeploy';
+mongoose.Promise = Promise;
+mongoose.connect(dbUri, {
+  useMongoClient: true,
+});
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies

@@ -1,14 +1,16 @@
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
-const User = require('../models/users');
+const User = require('../models/user');
 const configAuth = require('./config');
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
+    console.log('serializeUser',user);
     done(null, user.id);
   });
 
   passport.deserializeUser((id, done) => {
+    console.log('deserializeUser',id);
     User.findById(id, (err, user) => {
       done(err, user);
     });

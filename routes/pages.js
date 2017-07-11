@@ -1,4 +1,5 @@
 const pollServices = require('../services/pollservice'); 
+const userServices = require('../services/userservice'); 
 
 module.exports = (app) => {
 
@@ -10,7 +11,14 @@ module.exports = (app) => {
 
  	app.route('/profile')
   	.get((req, res) => {
-    	res.render('profile', { title: 'Your profile' });
+      console.log('profile', req.user);
+      /*
+      userServices.getOne(res.user.id)
+      .then(function(user) {
+         console.log(user);
+    	   res.render('profile', { title: 'Your profile', user: user });
+      });
+      */
   	});
 
  	app.route('/signin')

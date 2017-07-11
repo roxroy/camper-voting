@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
+const shortid = require('shortid');
 const Schema = mongoose.Schema;
 
 const pollSchema = new Schema({
-  name: String,
-  linkCode: String,
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  answers: [
+  _id: {
+      type: String,
+      'default': shortid.generate
+  },
+  ownerUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  title: String,
+  questions: [
     { 
+      choiceId: String,
       choice: String,
       clicks: Number
     }
   ],
+  votersUserIds: [],
+  votersIPs: [],
   createdAt: Date,
   updatedAt: Date
 });
