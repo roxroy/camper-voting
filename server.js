@@ -2,9 +2,8 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 
-const pageRoutes = require('./controllers/page.route'),
-      pollRoutes = require('./controllers/poll.route');
-
+const pageRoutes = require('./routes/pages'),
+      apiRoutes = require('./routes/api');
 
 const app = express();
 
@@ -16,11 +15,11 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 
 pageRoutes(app);
-pollRoutes(app);
+apiRoutes(app);
 
-// All remaining requests return the React app, so it can handle routing.
-app.get('*', function(request, response) {
-  //response.sendFile(path.resolve(__dirname, '../public', 'index.html'));
+app.use(function(req, res, next) {
+    res.status(400);
+   	res.render('error', { title: '404 Error' });
 });
 
 app.listen(process.env.PORT || 3000);
