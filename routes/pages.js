@@ -11,14 +11,10 @@ module.exports = (app) => {
 
  	app.route('/profile')
   	.get((req, res) => {
-      console.log('profile', req.user);
-      /*
-      userServices.getOne(res.user.id)
+      userServices.getOne(req.user.github.id)
       .then(function(user) {
-         console.log(user);
-    	   res.render('profile', { title: 'Your profile', user: user });
+    	   res.render('profile', { title: 'Your profile', user });
       });
-      */
   	});
 
  	app.route('/signin')
