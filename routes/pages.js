@@ -8,9 +8,9 @@ module.exports = (app) => {
     	res.render('index', { user: req.user, title: 'Show all polls', polls: appPolls });
   	});
 
- 	app.route('/about')
+ 	app.route('/profile')
   	.get((req, res) => {
-    	res.render('about', { title: 'About our company' });
+    	res.render('profile', { title: 'Your profile' });
   	});
 
  	app.route('/signin')

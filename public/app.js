@@ -24,4 +24,11 @@ const seriesOptions = {
 	        }]
 };
 
-Voting.Chart.createChart(seriesOptions);
+
+$( document ).ready(function() {
+	$(".dropdown-button").dropdown();
+
+	if (!document.getElementById('vote-container')){
+		Voting.Chart.createChart(seriesOptions);
+	}
+});
