@@ -92,9 +92,9 @@ $( document ).ready(function() {
 
 	if (document.getElementById('MYPOLLS')){
 		$( "#MYPOLLS" ).click(function(evt) {
-			let $myparent = $(evt.target).closest('li');
+			let $myparent = $(evt.target).closest('.card');
 		  let pollId = $myparent.data('id');
-		  $myparent.remove();
+		  $myparent.parent().remove();
 		  deletePoll({ pollId });
 		});
 	}
