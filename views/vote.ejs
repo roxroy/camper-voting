@@ -10,6 +10,10 @@
     </header>
 
     <main class="container">
+        <div class="section">
+           <h2 class="header center orange-text">Speak your mind</h2>
+        </div>
+
     	<h3><%= poll.title %></h3>
 
     	<div id="VOTING" class="row">
@@ -22,7 +26,7 @@
 			    </p>
 				<% } %>
 
-                <% if(!login) { %>
+                <% if(login) { %>
                     <p>
                       <br />
                       <input name="vote" type="radio" id="vote-id-other" value="NEW" v-model="selectedChoice" />
