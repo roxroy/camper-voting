@@ -12,17 +12,26 @@
     <main class="container">
     	<h3><%= poll.title %></h3>
 
-    	<div class="row">
+    	<div id="VOTING" class="row">
     		<div class="col s6">
-			  <form action="/polls/<%= poll.id%>" method="post"  >
+			  <form action="/polls/<%= poll.id%>" method="post"  @submit.prevent="castVote"  >
 			  <% for(var i=0; i<poll.answers.length; i++) {%>
 					<p>
-			      <input name="vote" type="radio" id="vote-id-<%= poll.answers[i].id%>" value="<%= poll.answers[i].id%>" />
+			      <input name="vote" type="radio" id="vote-id-<%= poll.answers[i].id%>" value="<%= poll.answers[i].id%>" v-model="selectedChoice" />
 			      <label for="vote-id-<%= poll.answers[i].id%>"><%= poll.answers[i].choice%></label>
 			    </p>
 				<% } %>
 
-				<button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                <% if(!login) { %>
+                    <p>
+                      <br />
+                      <input name="vote" type="radio" id="vote-id-other" value="NEW" v-model="selectedChoice" />
+                      <label for="vote-id-other">Other</label>
+                      <input name="new-choice" type="text" id="vote-id-new" v-model="newChoice" v-bind:enabled="isAllowed" />
+                    </p>
+                <% } %>
+
+				<button class="btn waves-effect waves-light" type="submit" name="action" v-bind:disabled="!isValid">Submit
 			    <i class="material-icons right">send</i>
 			  </button>
 				</form>
@@ -41,16 +50,14 @@
     <script src="/charting.js"></script>
     <script type='text/javascript'>
       var poll =<%-JSON.stringify(poll)%>
-      console.log(poll);
-
       $( document ).ready(function() {
+
+        votingActions(poll);
 
         const data = poll.answers.map(function(answer){
             return { name: answer.choice , y: answer.clicks };
         });
-
         Voting.Chart.createChart({ data });
-
       });
 
     </script>

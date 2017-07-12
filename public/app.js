@@ -60,12 +60,35 @@ function deletePoll(pollId) {
     });
 }
 
+function votingActions(pollId) {
+	var app = new Vue({
+	  el: '#VOTING',
+	  data: {
+	    message: 'Hello Vue!',
+	    selectedChoice: false,
+	    newChoice: '',
+	  },
+	  computed: {
+			isAllowed: function () {
+				return (this.newChoice.length);
+			},
+			isValid: function () {
+				let valid = this.selectedChoice;
+				if (this.selectedChoice==='NEW') 
+						valid = this.newChoice.length;
+				return valid;
+			},
+		},
+		methods: {
+        castVote: function () {
+        	console.log('castVote');
+        }
+    },
+	});
+}
+
 $( document ).ready(function() {
 	$(".dropdown-button").dropdown();
-
-	if (document.getElementById('vote-container')){
-		Voting.Chart.createChart(seriesOptions);
-	}
 
 	if (document.getElementById('MYPOLLS')){
 		$( "#MYPOLLS" ).click(function(evt) {
