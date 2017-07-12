@@ -3,24 +3,24 @@ const userServices = require('../services/userservice');
 
 module.exports = (app) => {
 
-	app.route('/')
-  	.get((req, res) => {
+  app.route('/')
+    .get((req, res) => {
       const appPolls = pollServices.getAll();
-    	res.render('index', { user: req.user, title: 'Show all polls', polls: appPolls });
-  	});
+      res.render('index', { title: 'Show all polls', polls: appPolls });
+    });
 
- 	app.route('/profile')
-  	.get((req, res) => {
+  app.route('/profile')
+    .get((req, res) => {
       userServices.getOne(req.user.github.id)
       .then(function(user) {
-    	   res.render('profile', { title: 'Your profile', user });
+         res.render('profile', { title: 'Your profile', user });
       });
-  	});
+    });
 
- 	app.route('/signin')
-  	.get((req, res) => {
-    	res.render('signin', { title: 'Sign in to create your own polls' });
-  	});
+  app.route('/signin')
+    .get((req, res) => {
+      res.render('signin', { title: 'Sign in to create your own polls' });
+    });
 
   app.route('/polls/:pollId')
     .get((req, res) => {

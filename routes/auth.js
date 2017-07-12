@@ -1,6 +1,4 @@
-const passport = require('passport');
-
-module.exports = (app) => {
+module.exports = (app, passport) => {
   app.route('/logout')
     .get((req, res) => {
       req.logout();
