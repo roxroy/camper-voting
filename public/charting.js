@@ -33,7 +33,7 @@ Voting.Chart = (function() {
   }
 
   return  {
-    createChart  : createChart,
+    createChart: createChart,
   }
 
 }());

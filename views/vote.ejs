@@ -39,6 +39,21 @@
     <% include ./partials/footer-scripts %>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="/charting.js"></script>
+    <script type='text/javascript'>
+      var poll =<%-JSON.stringify(poll)%>
+      console.log(poll);
+
+      $( document ).ready(function() {
+
+        const data = poll.answers.map(function(answer){
+            return { name: answer.choice , y: answer.clicks };
+        });
+
+        Voting.Chart.createChart({ data });
+
+      });
+
+    </script>
 
 </body>
 </html>
