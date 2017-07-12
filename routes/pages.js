@@ -44,7 +44,7 @@ module.exports = (app) => {
       const ownerId = '5d9034ef2d1a-4207-3616-a3f4';
       const appPolls = pollServices.getByUser(ownerId);
 
-      res.render('index', { user: req.user, title: 'Show all polls', polls: appPolls });
+      res.render('mypolls', { user: req.user, title: 'Show all polls', polls: appPolls });
     });
 
 };

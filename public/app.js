@@ -24,11 +24,38 @@ const seriesOptions = {
 	        }]
 };
 
+function deletePoll(pollId) {
+	 const body = JSON.stringify(pollId);
+    fetch('/api/poll', {
+      method: 'DELETE', credentials: 'include',
+      body: body,
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error(`status ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(function(json) {
+    	console.log('json', json);
+    });
+}
 
 $( document ).ready(function() {
 	$(".dropdown-button").dropdown();
 
-	if (!document.getElementById('vote-container')){
+	if (document.getElementById('vote-container')){
 		Voting.Chart.createChart(seriesOptions);
 	}
+
+	if (document.getElementById('MYPOLLS')){
+		$( "#MYPOLLS" ).click(function(evt) {
+			let $myparent = $(evt.target).closest('li');
+		  let pollId = $myparent.data('id');
+		  $myparent.remove();
+		  deletePoll({ pollId });
+		});
+	}
+
 });

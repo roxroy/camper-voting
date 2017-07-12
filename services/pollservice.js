@@ -4,13 +4,29 @@ const appPolls = [
     title: 'Car',
     ownerId: '5d9034ef2d1a-4207-3616-a3f4',
     answers: [
-      { choice: 'Jeep', id: 163,
+      { choice: 'Acura', id: 163,
         clicks: [{userId:'guest', ip:'192.168.1.1'}]
       },
       { choice: 'Benz', id: 243,
         clicks: [],
       },
       { choice: 'Toyota', id: 123,
+        clicks: [],
+      }
+    ]
+  },
+  {
+    id : 'ad0e119c-ad0d-c665-3f7d-6578c0c80242',
+    title: 'Truck',
+    ownerId: '5d9034ef2d1a-4207-3616-a3f4',
+    answers: [
+      { choice: 'Jeep', id: 163,
+        clicks: [{userId:'guest', ip:'192.168.1.1'}]
+      },
+      { choice: 'Land rover', id: 243,
+        clicks: [],
+      },
+      { choice: 'GMC', id: 123,
         clicks: [],
       }
     ]
@@ -50,9 +66,13 @@ function postVote(pollId, choiceId) {
   return appPolls.find( item => item.id == pollId );
 }
 
+function deletePoll(pollId) {
+}
+
 module.exports = {
   getAll,
   getOne,
   getByUser,
   postVote,
+  deletePoll,
 }

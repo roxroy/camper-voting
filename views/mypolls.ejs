@@ -10,13 +10,14 @@
     </header>
 
     <main class="container">
-			<div class="collection">
-			<% for(var i=0; i<polls.length; i++) {%>
-			   <a href="/polls/<%= polls[i].id%>" class="collection-item"><%= polls[i].title %></a>
-			<% } %>
-			</div>
-
-      <div id="root"></div>
+        <ul class="collection" id="MYPOLLS" >
+            <% for(var i=0; i<polls.length; i++) {%>
+             <li class="collection-item" data-id="<%= polls[i].id%>">
+                <a href="/polls/<%= polls[i].id%>"><%= polls[i].title %></a>
+                <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>   
+             </li>
+            <% } %>
+        </ul>
     </main>
 
     <% include ./partials/footer %>
