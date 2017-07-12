@@ -9,7 +9,7 @@ const pollSchema = new Schema({
   },
   ownerUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   title: String,
-  questions: [
+  answers: [
     { 
       choiceId: String,
       choice: String,
@@ -17,7 +17,7 @@ const pollSchema = new Schema({
     }
   ],
   votersUserIds: [],
-  votersIPs: [],
+  votersIps: [],
   createdAt: Date,
   updatedAt: Date
 });
