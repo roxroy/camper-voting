@@ -24,8 +24,8 @@ const seriesOptions = {
 	        }]
 };
 
-function vote(pollId, choiceId) {
-	 const body = JSON.stringify(pollId, choiceId);
+function vote(pollId, choiceId, newChoice) {
+	 const body = JSON.stringify({ pollId, choiceId, newChoice });
     fetch('/api/vote', {
       method: 'POST', credentials: 'include',
       body: body,
@@ -60,7 +60,7 @@ function deletePoll(pollId) {
     });
 }
 
-function votingActions(pollId) {
+function votingActions(poll) {
 	var app = new Vue({
 	  el: '#VOTING',
 	  data: {
@@ -80,9 +80,9 @@ function votingActions(pollId) {
 			},
 		},
 		methods: {
-        castVote: function () {
-        	console.log('castVote');
-        }
+      castVote: function () {
+      	vote(poll.id, this.selectedChoice, this.newChoice );
+      },
     },
 	});
 }
