@@ -24,6 +24,24 @@ const seriesOptions = {
 	        }]
 };
 
+function vote(pollId, choiceId) {
+	 const body = JSON.stringify(pollId, choiceId);
+    fetch('/api/vote', {
+      method: 'POST', credentials: 'include',
+      body: body,
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error(`status ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(function(json) {
+    	console.log('json', json);
+    });
+}
+
 function deletePoll(pollId) {
 	 const body = JSON.stringify(pollId);
     fetch('/api/poll', {
