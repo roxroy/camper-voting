@@ -48,22 +48,26 @@ module.exports = (app) => {
       res.render('mypolls', { user: req.user, title: 'Show all polls', polls: appPolls });
     })
     .post(authUtil.isLoggedIn, (req, res) => {
-
-      res.render('createpoll', { title: 'Create poll', polls: appPolls });
+      //const poll = req.body.poll;
+      console.log('mypolls-req.params', req.params);
+      console.log('mypolls-req.body', req.body);
+      res.redirect('/mypolls');
     });
 
   app.route('/mypolls/:pollId')
     .get(authUtil.isLoggedIn, (req, res) => {
+
+      let appPoll = {};
       const pollId = req.params.pollId.trim();
-      const appPoll = pollServices.getOne(pollId);
-      
+      if(pollId === 'add') {
+        appPoll = {
+          title: '',
+          answers: [ { choice:'' } ],
+        }
+      } else {
+        appPoll = pollServices.getOne(pollId);
+      }
       res.render('createpoll', { title: 'Show poll', poll: appPoll});
-    })
-    .put(authUtil.isLoggedIn, (req, res) => {
-      res.render('createpoll');
-    })
-    .delete(authUtil.isLoggedIn, (req, res) => {
-      res.render('createpoll');
     });
 
 };

@@ -42,6 +42,24 @@ function vote(pollId, choiceId, newChoice) {
     });
 }
 
+function savePollData(pollId, title, answers) {
+	 const body = JSON.stringify({ pollId, title, answers });
+    fetch('/api/poll', {
+      method: 'POST', credentials: 'include',
+      body: body,
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error(`status ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(function(json) {
+    	console.log('json', json);
+    });
+}
+
 function deletePoll(pollId) {
 	 const body = JSON.stringify(pollId);
     fetch('/api/poll', {
@@ -95,8 +113,20 @@ function editPollActions(poll) {
 	  	answers: poll.answers,
 	  },
 	  computed: {
+			isValid: function () {
+				return this.title.length && this.answers.length;
+			},
 		},
 		methods: {
+      newChoice: function () {
+      	this.answers.push({
+	        choice: '',
+	      });
+      },
+      savePoll: function () {
+      	savePollData(poll.id, this.title, this.answers);
+      	window.location.href = '/mypolls';
+      },
     },
 	});
 }

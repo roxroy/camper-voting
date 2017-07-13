@@ -5,7 +5,7 @@ Voting.Chart = (function() {
   function createChart(seriesOptions) {
   	Highcharts.chart('vote-container', {
   	    chart: {
-  	        plotBackgroundColor: null,
+  	        plotBackgroundColor: '#e1f5fe',
   	        plotBorderWidth: null,
   	        plotShadow: false,
   	        type: 'pie'

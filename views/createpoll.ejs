@@ -15,7 +15,32 @@
         </div>
 
         <div class="row" id="EDITPOLL">
-        <input type="text" v-model="title" />
+        <div class="row card-panel blue lighten-5">
+            <form class="col s12" action="/mypolls" method="post" @submit.prevent="savePoll" >
+              <div class="row">
+                <div class="input-field col s12">
+                    <input placeholder="Placeholder" id="title" type="text" class="validate" v-model="title" >
+                    <label for="title">Title</label>
+                </div>
+              </div>
+              <div class="row choice-box">
+                <span class="blue-text text-darken-2">Poll Choices</span>
+                
+                <ul class="input-field col s12 todo-list">
+                  <li v-for="answer in answers">
+                   <input class="edit" type="text"
+                        v-model="answer.choice">
+                  </li>
+                  <li>
+                    <span class="btn-floating btn-small waves-effect waves-light light-red"><i class="material-icons" v-on:click="newChoice" >add</i></a>
+                  </li>
+                </ul>  
+              </div>
+              <button class="btn waves-effect waves-light" type="submit" name="action" v-bind:disabled="!isValid">Submit
+                <i class="material-icons right">send</i>
+              </button>
+            </form>
+        </div>
         </div>
     </main>
 

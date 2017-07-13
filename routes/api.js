@@ -14,8 +14,12 @@ module.exports = (app) => {
     });
 
   app.route('/api/poll')
+    .post((req, res) => {
+      console.log('req.body', req.body);
+      res.status(200).send({ success:'' });
+    })
     .delete((req, res) => {
-      const pollId= req.body.pollId;
+      const pollId = req.body.pollId;
 
       pollServices.deletePoll(pollId);
     	res.status(200).send({ success:'' });
