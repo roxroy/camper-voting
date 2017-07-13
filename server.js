@@ -14,7 +14,7 @@ const app = express();
 require('dotenv').load();
 require('./auth/passport')(passport);
 
-const dbUri = process.env.MONGOLAB_URI || 'mongodb://localhost/voting';
+const dbUri = process.env.MONGO_URI || 'mongodb://localhost/voting';
 mongoose.Promise = Promise;
 mongoose.connect(dbUri, {
   useMongoClient: true,
