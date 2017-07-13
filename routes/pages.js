@@ -46,6 +46,24 @@ module.exports = (app) => {
       const appPolls = pollServices.getByUser(ownerUserId);
 
       res.render('mypolls', { user: req.user, title: 'Show all polls', polls: appPolls });
+    })
+    .post(authUtil.isLoggedIn, (req, res) => {
+
+      res.render('createpoll', { title: 'Create poll', polls: appPolls });
+    });
+
+  app.route('/mypolls/:pollId')
+    .get(authUtil.isLoggedIn, (req, res) => {
+      const pollId = req.params.pollId.trim();
+      const appPoll = pollServices.getOne(pollId);
+      
+      res.render('createpoll', { title: 'Show poll', poll: appPoll});
+    })
+    .put(authUtil.isLoggedIn, (req, res) => {
+      res.render('createpoll');
+    })
+    .delete(authUtil.isLoggedIn, (req, res) => {
+      res.render('createpoll');
     });
 
 };
