@@ -11,7 +11,10 @@ const pollSchema = new Schema({
   title: String,
   answers: [
     { 
-      choiceId: String,
+      _id: {
+          type: String,
+          'default': shortid.generate
+      },
       choice: String,
       clicks: Number
     }

@@ -71,18 +71,48 @@ const makeNewPoll = (pollData) => {
   return data;  
 }
 
+const mapListItem = (item) => {
+  return {
+        id : item._id,
+        title :  item.title,
+  }
+}
 
 function getAll() {
-  return appPolls;
+  return Poll.find({})
+    .exec((err, polls) => {
+      if (err) {
+        throw err;
+      }
+
+      return polls.map(item => {
+        mapListItem(item);
+      });
+  });
 }
 
 function getByUser(ownerUserId) {
-  return appPolls.filter( item => item.ownerUserId == ownerUserId );
+  return Poll.find({ownerUserId })
+    .exec((err, polls) => {
+      if (err) {
+        throw err;
+      }
+
+      return polls.map(item => {
+        mapListItem(item);
+      });
+  });
 }
 
-
 function getOne(pollId) {
-  return appPolls.find( item => item.id == pollId );
+  return Poll.findOne({ _id : pollId })
+    .exec((err, poll) => {
+      if (err) {
+        throw err;
+      }
+      console.log('getOne', pollId, poll);
+      return poll;
+  });
 }
 
 function postVote(pollId, choiceId) {
@@ -90,31 +120,37 @@ function postVote(pollId, choiceId) {
 }
 
 function savePoll(pollData, ownerUserId) {
-  let newPoll = {};
   console.log('savePoll', pollData, ownerUserId);
+  const searchPollId = pollData.hasOwnProperty('pollId') ? pollData.pollId : '-new-';
 
-  if (!pollData.hasOwnProperty('pollId')) {
-
-    newPoll = Poll({
-      title: pollData.title,
-      ownerUserId: ownerUserId,
-    });
-
-    newPoll.answers = pollData.answers.map(item => {
-      let answer = { choice: item.choice,
-        clicks: 0 };
-      if (!item.hasOwnProperty('choiceId')) {
-         answer.choiceId = shortid.generate();
-      }
-      return answer; 
-    });
-  }
-  console.log('newPoll', newPoll);
-
-  newPoll.save(function(err, poll) {
+  Poll.findById(searchPollId, function(err, poll) {
     if (err) throw err;
-    console.log('Poll created!');
-    //res.status(200).send(mapItem(job));
+
+    console.log('save poll find', poll);
+    if (!poll) {
+      poll = Poll({
+        title: pollData.title,
+        ownerUserId: ownerUserId,
+        answers: [],
+      });
+    };
+
+    pollData.answers.forEach(item => {
+      if (!item.hasOwnProperty('_id')) {
+        poll.answers.push({
+          choice: item.choice,
+          clicks: 0 });
+      } else {
+        poll.answers.find(p => item._id === p._id).title = item.title;
+      }
+    });
+
+    console.log('poll', poll);
+    poll.save(function(err, poll) {
+      if (err) throw err;
+      console.log('Poll created!');
+      //res.status(200).send(mapItem(job));
+    });
   });
 }
 

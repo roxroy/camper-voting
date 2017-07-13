@@ -6,8 +6,10 @@ module.exports = (app) => {
 
   app.route('/')
     .get((req, res) => {
-      const appPolls = pollServices.getAll();
-      res.render('index', { title: 'Show all polls', polls: appPolls });
+      pollServices.getAll()
+      .then(function(polls) {
+        res.render('index', { title: 'Show all polls', polls });
+      });
     });
 
   app.route('/profile')
@@ -27,9 +29,10 @@ module.exports = (app) => {
     .get((req, res) => {
 
       const pollId = req.params.pollId.trim();
-      const appPoll = pollServices.getOne(pollId);
-
-      res.render('vote', { user: req.user, title: 'Cast your vote.', poll: appPoll });
+      pollServices.getOne(pollId)
+      .then(function(poll) {
+        res.render('vote', { user: req.user, title: 'Cast your vote.', poll });
+      });      
     })
     .post((req, res) => {
 
@@ -42,10 +45,12 @@ module.exports = (app) => {
 
   app.route('/mypolls')
     .get(authUtil.isLoggedIn, (req, res) => {
-      const ownerUserId = '5d9034ef2d1a-4207-3616-a3f4';
-      const appPolls = pollServices.getByUser(ownerUserId);
+      const ownerUserId = req.user.id; 
 
-      res.render('mypolls', { user: req.user, title: 'Show all polls', polls: appPolls });
+      pollServices.getByUser(ownerUserId)
+      .then(function(polls) {
+        res.render('mypolls', { user: req.user, title: 'Show all polls', polls });
+      });
     });
 
   app.route('/mypolls/:pollId')
