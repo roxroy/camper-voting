@@ -1,3 +1,6 @@
+const Poll = require('../models/poll');
+const shortid = require('shortid');
+
 const appPolls = [
   {
     id : '2d0e119c-c665-3f7d-ad0d-6578c0c80242',
@@ -58,6 +61,17 @@ const appPolls = [
   }
 ];
 
+const makeNewPoll = (pollData) => {
+  let data = {};
+  if (reqbody.hasOwnProperty('pollId'))
+    data.pollId = reqbody.pollId;
+  data.title = reqbody.title;
+  data.answers = reqbody.answers;
+  
+  return data;  
+}
+
+
 function getAll() {
   return appPolls;
 }
@@ -75,6 +89,35 @@ function postVote(pollId, choiceId) {
   return appPolls.find( item => item.id == pollId );
 }
 
+function savePoll(pollData, ownerUserId) {
+  let newPoll = {};
+  console.log('savePoll', pollData, ownerUserId);
+
+  if (!pollData.hasOwnProperty('pollId')) {
+
+    newPoll = Poll({
+      title: pollData.title,
+      ownerUserId: ownerUserId,
+    });
+
+    newPoll.answers = pollData.answers.map(item => {
+      let answer = { choice: item.choice,
+        clicks: 0 };
+      if (!item.hasOwnProperty('choiceId')) {
+         answer.choiceId = shortid.generate();
+      }
+      return answer; 
+    });
+  }
+  console.log('newPoll', newPoll);
+
+  newPoll.save(function(err, poll) {
+    if (err) throw err;
+    console.log('Poll created!');
+    //res.status(200).send(mapItem(job));
+  });
+}
+
 function deletePoll(pollId) {
 }
 
@@ -84,4 +127,5 @@ module.exports = {
   getByUser,
   postVote,
   deletePoll,
+  savePoll,
 }

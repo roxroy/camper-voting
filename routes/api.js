@@ -1,5 +1,15 @@
 const pollServices = require('../services/pollservice'); 
 
+const getPollData = (reqbody) => {
+  let data = {};
+  if (reqbody.hasOwnProperty('pollId'))
+    data.pollId = reqbody.pollId;
+  data.title = reqbody.title;
+  data.answers = reqbody.answers;
+  
+  return data;  
+}
+
 module.exports = (app) => {
 
  app.route('/api/vote')
@@ -15,7 +25,7 @@ module.exports = (app) => {
 
   app.route('/api/poll')
     .post((req, res) => {
-      console.log('req.body', req.body);
+      pollServices.savePoll(getPollData(req.body), req.user.id);
       res.status(200).send({ success:'' });
     })
     .delete((req, res) => {

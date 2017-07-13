@@ -7,7 +7,7 @@ const pollSchema = new Schema({
       type: String,
       'default': shortid.generate
   },
-  ownerUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  ownerUserId: String,
   title: String,
   answers: [
     { 

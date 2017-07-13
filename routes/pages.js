@@ -46,12 +46,6 @@ module.exports = (app) => {
       const appPolls = pollServices.getByUser(ownerUserId);
 
       res.render('mypolls', { user: req.user, title: 'Show all polls', polls: appPolls });
-    })
-    .post(authUtil.isLoggedIn, (req, res) => {
-      //const poll = req.body.poll;
-      console.log('mypolls-req.params', req.params);
-      console.log('mypolls-req.body', req.body);
-      res.redirect('/mypolls');
     });
 
   app.route('/mypolls/:pollId')
