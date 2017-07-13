@@ -1,29 +1,4 @@
 
-const seriesOptions = {
-	text : 'Browser market shares January, 2015 to May, 2015',
-	data: [{
-	            name: 'Microsoft Internet Explorer',
-	            y: 56.33
-	        }, {
-	            name: 'Chrome',
-	            y: 24.03,
-	            sliced: true,
-	            selected: true
-	        }, {
-	            name: 'Firefox',
-	            y: 60.38
-	        }, {
-	            name: 'Safari',
-	            y: 4.77
-	        }, {
-	            name: 'Opera',
-	            y: 0.91
-	        }, {
-	            name: 'Proprietary or Undetectable',
-	            y: 0.2
-	        }]
-};
-
 function vote(pollId, choiceId, newChoice) {
 	 const body = JSON.stringify({ pollId, choiceId, newChoice });
     fetch('/api/vote', {
@@ -79,7 +54,7 @@ function deletePoll(pollId) {
 }
 
 function votingActions(poll) {
-	var app = new Vue({
+	let app = new Vue({
 	  el: '#VOTING',
 	  data: {
 	    message: 'Hello Vue!',
@@ -103,6 +78,19 @@ function votingActions(poll) {
       },
     },
 	});
+
+	function tweet(text) {
+		if(text.length > 136){
+      text = text.substr(0, 135) + '...';
+    }
+    let tweetLink = "https://twitter.com/intent/tweet?text=" + text;
+    window.open(tweetLink, "_blank");
+  }
+
+	$('#TWEET').on('click', function() {
+    tweet(poll.title);
+  });
+
 }
 
 function editPollActions(poll) {

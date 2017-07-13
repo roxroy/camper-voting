@@ -15,17 +15,17 @@
         </div>
 
       <div class="row card-panel blue lighten-5">          
-    	<h3><%= poll.title %></h3>
+      <h3><%= poll.title %></h3>
 
-    	<div id="VOTING" class="row">
-    		<div class="col s6">
-			  <form action="/polls/<%= poll.id%>" method="post"  @submit.prevent="castVote">
-			  <% for(var i=0; i<poll.answers.length; i++) {%>
-					<p>
-			      <input name="vote" type="radio" id="vote-id-<%= poll.answers[i].id%>" value="<%= poll.answers[i]._id%>" v-model="selectedChoice" />
-			      <label for="vote-id-<%= poll.answers[i]._id%>"><%= poll.answers[i].choice%></label>
-			    </p>
-				<% } %>
+      <div id="VOTING" class="row">
+        <div class="col s6">
+        <form action="/polls/<%= poll.id%>" method="post"  @submit.prevent="castVote">
+        <% for(var i=0; i<poll.answers.length; i++) {%>
+          <p>
+            <input name="vote" type="radio" id="vote-id-<%= poll.answers[i].id%>" value="<%= poll.answers[i]._id%>" v-model="selectedChoice" />
+            <label for="vote-id-<%= poll.answers[i]._id%>"><%= poll.answers[i].choice%></label>
+          </p>
+        <% } %>
 
         <% if(login) { %>
             <p>
@@ -36,16 +36,17 @@
             </p>
         <% } %>
 
-				<button class="btn waves-effect waves-light" type="submit" name="action" v-bind:disabled="!isValid">Submit
-			    <i class="material-icons right">send</i>
-			  </button>
-				</form>
-				</div>
+        <button class="btn waves-effect waves-light" type="submit" name="action" v-bind:disabled="!isValid">Submit
+          <i class="material-icons right">send</i>
+        </button>
+        </form>
+        </div>
 
-    		<div class="col s6">
-    			<div id="vote-container"></div>
-				</div>
-			</div>
+        <div class="col s6">
+          <div id="vote-container"></div>
+          <p id="TWEET" class="waves-effect waves-light btn"><i class="fa fa-twitter" aria-hidden="true"></i> Tweet it</p>
+        </div>
+      </div>
       </div>
     </main>
 
