@@ -1,5 +1,6 @@
 const pollServices = require('../services/pollservice'); 
 const userServices = require('../services/userservice'); 
+const authUtil = require('../auth/auth.util');
 
 module.exports = (app) => {
 
@@ -10,7 +11,7 @@ module.exports = (app) => {
     });
 
   app.route('/profile')
-    .get((req, res) => {
+    .get(authUtil.isLoggedIn, (req, res) => {
       userServices.getOne(req.user.github.id)
       .then(function(user) {
          res.render('profile', { title: 'Your profile', user });
@@ -40,7 +41,7 @@ module.exports = (app) => {
     });
 
   app.route('/mypolls')
-    .get((req, res) => {
+    .get(authUtil.isLoggedIn, (req, res) => {
       const ownerUserId = '5d9034ef2d1a-4207-3616-a3f4';
       const appPolls = pollServices.getByUser(ownerUserId);
 

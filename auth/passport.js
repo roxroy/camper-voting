@@ -1,6 +1,7 @@
 const GitHubStrategy = require('passport-github2').Strategy;
 const User = require('../models/user');
 const configAuth = require('./config');
+const userServices = require('../services/userservice'); 
 
 module.exports = (passport) => {
   passport.serializeUser((user, done) => {
@@ -29,18 +30,7 @@ module.exports = (passport) => {
           return done(null, user);
         }
 
-        const newUser = new User();
-
-        newUser.github.id = profile.id;
-        newUser.github.userName = profile.username;
-        newUser.github.displayName = profile.displayName;
-        newUser.github.profileUrl = profile.profileUrl;
-
-        newUser.save((err) => {
-          if (err) {
-            throw err;
-          }
-
+        userServices.addNew(profile, (newUser) => {
           return done(null, newUser);
         });
       });
