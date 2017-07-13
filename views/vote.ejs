@@ -22,8 +22,8 @@
 			  <form action="/polls/<%= poll.id%>" method="post"  @submit.prevent="castVote">
 			  <% for(var i=0; i<poll.answers.length; i++) {%>
 					<p>
-			      <input name="vote" type="radio" id="vote-id-<%= poll.answers[i].id%>" value="<%= poll.answers[i].id%>" v-model="selectedChoice" />
-			      <label for="vote-id-<%= poll.answers[i].id%>"><%= poll.answers[i].choice%></label>
+			      <input name="vote" type="radio" id="vote-id-<%= poll.answers[i].id%>" value="<%= poll.answers[i]._id%>" v-model="selectedChoice" />
+			      <label for="vote-id-<%= poll.answers[i]._id%>"><%= poll.answers[i].choice%></label>
 			    </p>
 				<% } %>
 

@@ -33,14 +33,6 @@ module.exports = (app) => {
       .then(function(poll) {
         res.render('vote', { user: req.user, title: 'Cast your vote.', poll });
       });      
-    })
-    .post((req, res) => {
-
-      const pollId = req.params.pollId.trim();
-      const voteId = req.body.vote;
-      const appPoll = pollServices.postVote(pollId, voteId);
-
-      res.render('vote', { user: req.user, title: 'Cast your vote.', poll: appPoll });
     });
 
   app.route('/mypolls')
@@ -56,17 +48,18 @@ module.exports = (app) => {
   app.route('/mypolls/:pollId')
     .get(authUtil.isLoggedIn, (req, res) => {
 
-      let appPoll = {};
       const pollId = req.params.pollId.trim();
-      if(pollId === 'add') {
-        appPoll = {
-          title: '',
-          answers: [ { choice:'' } ],
+      pollServices.getOne(pollId)
+      .then(function(poll) {
+
+        if(pollId === 'add') {
+          poll = {
+            title: '',
+            answers: [ { choice:'' } ],
+          }
         }
-      } else {
-        appPoll = pollServices.getOne(pollId);
-      }
-      res.render('createpoll', { title: 'Show poll', poll: appPoll});
+        res.render('createpoll', { title: 'Show poll', poll});
+      });
     });
 
 };

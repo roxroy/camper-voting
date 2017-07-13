@@ -1,80 +1,10 @@
 const Poll = require('../models/poll');
 const shortid = require('shortid');
 
-const appPolls = [
-  {
-    id : '2d0e119c-c665-3f7d-ad0d-6578c0c80242',
-    title: 'Car',
-    ownerUserId: '5d9034ef2d1a-4207-3616-a3f4',
-    answers: [
-      { choice: 'Lexus', id: 153,
-        clicks: 4
-      },
-      { choice: 'Acura', id: 163,
-        clicks: 3
-      },
-      { choice: 'Benz', id: 243,
-        clicks: 5
-      },
-      { choice: 'Avalon', id: 123,
-        clicks: 2,
-      }
-    ],
-    votersUserIds: ['3f7d'],
-    votersIps: ['192.168.1.1'],
-  },
-  {
-    id : 'ad0e119c-ad0d-c665-3f7d-6578c0c80242',
-    title: 'Truck',
-    ownerUserId: '5d9034ef2d1a-4207-3616-a3f4',
-    answers: [
-      { choice: 'Jeep', id: 163,
-        clicks: 3
-      },
-      { choice: 'Land rover', id: 243,
-        clicks: 5,
-      },
-      { choice: 'GMC', id: 123,
-        clicks: 2,
-      }
-    ],
-    votersUserIds: ['3f7d'],
-    votersIps: ['192.168.1.2'],
-  },
-  {
-    id : '725f9788-4207-3616-a3f4-ef2d1a5d9034',
-    title: 'Colour',
-    ownerUserId: 'ef2d1a5d9034-4207-3616-a3f4',
-    answers: [
-      { choice: 'Red', id: 20,
-        clicks: 1,
-      },
-      { choice: 'Green', id: 23,
-        clicks: 2,
-      },
-      { choice: 'Blue', id: 28,
-        clicks: 1,
-      }
-    ],
-    votersUserIds: ['3f7d'],
-    votersIps: ['192.168.1.2'],
-  }
-];
-
-const makeNewPoll = (pollData) => {
-  let data = {};
-  if (reqbody.hasOwnProperty('pollId'))
-    data.pollId = reqbody.pollId;
-  data.title = reqbody.title;
-  data.answers = reqbody.answers;
-  
-  return data;  
-}
-
 const mapListItem = (item) => {
   return {
-        id : item._id,
-        title :  item.title,
+    _id : item._id,
+    title :  item.title,
   }
 }
 
@@ -110,13 +40,31 @@ function getOne(pollId) {
       if (err) {
         throw err;
       }
-      console.log('getOne', pollId, poll);
       return poll;
   });
 }
 
-function postVote(pollId, choiceId) {
-  return appPolls.find( item => item.id == pollId );
+function postVote(pollId, choiceId, newChoice) {
+  return Poll.findOne({ _id : pollId })
+    .exec((err, poll) => {
+      if (err) {
+        throw err;
+      }
+      if (choiceId != 'NEW') {
+        const answer = poll.answers.find(p => choiceId === p._id);
+        answer.clicks++;
+      } else {
+        poll.answers.push({
+          choice: newChoice,
+          clicks: 1 });
+      }
+
+      poll.save(function(err, poll) {
+        if (err) throw err;
+        return poll;
+      });
+
+  });;
 }
 
 function savePoll(pollData, ownerUserId) {
@@ -126,14 +74,13 @@ function savePoll(pollData, ownerUserId) {
   Poll.findById(searchPollId, function(err, poll) {
     if (err) throw err;
 
-    console.log('save poll find', poll);
     if (!poll) {
       poll = Poll({
-        title: pollData.title,
         ownerUserId: ownerUserId,
         answers: [],
       });
     };
+    poll.title = pollData.title;
 
     pollData.answers.forEach(item => {
       if (!item.hasOwnProperty('_id')) {
@@ -141,20 +88,28 @@ function savePoll(pollData, ownerUserId) {
           choice: item.choice,
           clicks: 0 });
       } else {
-        poll.answers.find(p => item._id === p._id).title = item.title;
+        const answer = poll.answers.find(p => item._id === p._id);
+        answer.choice = item.choice;        
       }
     });
 
-    console.log('poll', poll);
+    console.log('save poll poll', poll);
     poll.save(function(err, poll) {
       if (err) throw err;
-      console.log('Poll created!');
-      //res.status(200).send(mapItem(job));
+      console.log('Poll Updated!');
     });
   });
 }
 
 function deletePoll(pollId) {
+   Poll.findById(pollId, (err, poll) => {
+    if (err) throw err;
+
+    poll.remove(function(err) {
+      if (err) throw err;
+      console.log('Successfully deleted: ' + pollId );
+    });
+  });
 }
 
 module.exports = {

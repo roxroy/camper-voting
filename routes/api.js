@@ -19,7 +19,7 @@ module.exports = (app) => {
       const newChoice= req.body.newChoice;
       console.log('got api/vote', pollId, choiceId, newChoice );
 
-      pollServices.postVote(pollId, choiceId);
+      pollServices.postVote(pollId, choiceId, newChoice);
     	res.status(200).send({ success:'' });
     });
 

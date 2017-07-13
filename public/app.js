@@ -38,7 +38,7 @@ function vote(pollId, choiceId, newChoice) {
       return response.json();
     })
     .then(function(json) {
-    	console.log('json', json);
+    	window.location.reload();
     });
 }
 
@@ -99,7 +99,7 @@ function votingActions(poll) {
 		},
 		methods: {
       castVote: function () {
-      	vote(poll.id, this.selectedChoice, this.newChoice );
+      	vote(poll._id, this.selectedChoice, this.newChoice );
       },
     },
 	});
@@ -124,7 +124,7 @@ function editPollActions(poll) {
 	      });
       },
       savePoll: function () {
-      	savePollData(poll.id, this.title, this.answers);
+      	savePollData(poll._id, this.title, this.answers);
       	window.location.href = '/mypolls';
       },
     },
