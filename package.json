@@ -2,6 +2,9 @@
   "name": "camper-voting",
   "version": "1.0.0",
   "description": "Build a full stack JavaScript voting app.",
+  "engines": {
+    "node": "6.11.x"
+  },
   "scripts": {
     "start": "node server.js",
     "start-server": "nodemon server.js",
